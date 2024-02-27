@@ -4,6 +4,13 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Scientific Calculator</title>
+    <style>
+        /* Add styling for buttons and display */
+        button {
+            padding: 10px;
+            margin: 5px;
+        }
+    </style>
 </head>
 <body>
     <h1>Scientific Calculator</h1>
@@ -46,12 +53,26 @@
 
         function calculate() {
             try {
-                const result = eval(document.getElementById('display').value);
+                const expression = document.getElementById('display').value;
+                if (expression.includes('/0')) {
+                    throw new Error('Division by zero is not allowed');
+                }
+                const result = eval(expression);
                 document.getElementById('display').value = result;
             } catch (error) {
-                document.getElementById('display').value = 'Error';
+                document.getElementById('display').value = 'Error: ' + error.message;
             }
         }
+
+        // Handle key press events for numeric keys and operators
+        document.addEventListener('keydown', function(event) {
+            const key = event.key;
+            if (key.match(/[0-9+\-*/.]/)) {
+                appendCharacter(key);
+            } else if (key === 'Enter') {
+                calculate();
+            }
+        });
     </script>
 </body>
 </html>
